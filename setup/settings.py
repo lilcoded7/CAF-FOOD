@@ -57,12 +57,12 @@ ROOT_URLCONF = 'setup.urls'
 AUTH_USER_MODEL = 'account.CustomUser'
 
 
-STORAGES = {
-    # ...
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+# STORAGES = {
+#     # ...
+#     "staticfiles": {
+#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+#     },
+# }
 
 TEMPLATES = [
     {

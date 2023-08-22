@@ -30,20 +30,17 @@ def shop(request):
     total_cart  = data['total_cart']
     products = Food.objects.all()
     category = Category.objects.all()
-    context = {'products':products, 'order':order,'total_cart':total_cart,'category':category}
+    
+    context = {
+        'products': products,
+        'order': order,
+        'total_cart': total_cart,  
+        'category':category
+    }
     return render(request, 'shop.html', context)
 
-def view(request, pk):
-    data       = cartData(request)
-    order       = data['order']
-    total_cart  = data['total_cart']
-    items = Food.objects.all()
-    product = Food.objects.get(id=pk)
-    category = Category.objects.all()
-    context = {'product':product, 'order':order, 'total_cart':total_cart,'category':category, 'items':items}
-    return render(request, 'view.html', context)
 
-@login_required
+# @login_required
 def cart(request):
     data       = cartData(request)
     items       = data['items']
@@ -91,12 +88,12 @@ def process_order(request):
     return JsonResponse('payment complete !', safe=False)
 
 def checkout(request):
-    data       = cartData(request)
-    items       = data['items']
-    order       = data['order']
-    total_cart  = data['total_cart']
-    category = Category.objects.all()
-    context = {'items':items, 'order':order, 'total_cart':total_cart,'category':category}
+    # data       = cartData(request)
+    # items       = data['items']
+    # order       = data['order']
+    # total_cart  = data['total_cart']
+    # category = Category.objects.all()
+    # context = {'items':items, 'order':order, 'total_cart':total_cart,'category':category}
     return render(request, 'checkout.html', context)
 
 

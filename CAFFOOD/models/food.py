@@ -20,13 +20,5 @@ class Food(TimeBaseModel):
             url = ''
         return url 
 
-    @property 
-    def videoURL(self):
-        try:
-            url = self.video.url
-        except:
-            url = ''
-        return url 
-
     def __str__(self):
-        return self.name 
+        return self.name

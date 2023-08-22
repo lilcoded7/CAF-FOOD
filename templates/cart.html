@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div style="background-color: green;" id="banner-adv" class="banner-adv">
+        <a href="#"> <span class="text">Get free discount on your first order.</span>
+        </a> <span class="close-banner"></span>
+    </div>
+    
+    <!-- tracking map -->
+    <section class="checkout-page section-padding bg-light-theme">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    
+                    <!-- recipt -->
+                    <div class="recipt-sec padding-20">
+                        <div class="recipt-name title u-line full-width mb-xl-20">
+                            <div class="recipt-name-box">
+                                <h5 class="text-light-black fw-600 mb-2">CAF-FOOD</h5>
+                            </div>
+                            <div class="countdown-box">
+                                <div class="time-box"> <span id="mb-hours"></span>
+                                </div>
+                                <div class="time-box"> <span id="mb-minutes"></span>
+                                </div>
+                                <div class="time-box"> <span id="mb-seconds"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="u-line mb-xl-20">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="recipt-name full-width padding-tb-10 pt-0">
+                                        <h5 class="text-light-black fw-600">Dill To:</h5>
+                                        <span class="text-light-white ">Jhon Deo</span>
+                                        <span class="text-light-white ">Home</span>
+                                        <span class="text-light-white ">314 79th St</span>
+                                        <span class="text-light-white ">Rite Aid, Brooklyn, NY, 11209</span>
+                                        <p class="text-light-white ">(347) 123456789</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="recipt-name full-width padding-tb-10 pt-0">
+                                        <h5 class="text-light-black fw-600">Pick up delivery</h5>
+                                        <p class="text-light-white ">customers are to visit the cafiteria to receive thier order</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="ad-banner padding-tb-10 h-100">
+                                        <img src="{% static 'assets/img/details/banner.jpg' %}" class="img-fluid full-width" alt="banner-adv">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="u-line mb-xl-20">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h5 class="text-light-black fw-600 title">Your Order <span><a href="#" class="fs-12">Price</a></span></h5>
+                                    </p>
+                                </div>
+                                <div class="col-lg-12">
+                                    
+                                    {% for food in items %}
+                                    <div class="checkout-product">
+                                        <div class="img-name-value">
+                                            <div class="product-img">
+                                                <a href="#">
+                                                    <img src="{{food.food.imageURL}}" alt="#">
+                                                </a>
+                                            </div>
+                                            <div class="product-value"> <span class="text-light-white">{{food.quantity}}</span>
+                                            </div>
+                                            <div class="product-name"> <span><a href="#" class="text-light-white">{{food.food.name}}</a></span>
+                                            </div>
+                                        </div>
+                                        <div class="price"> <span class="text-light-white">GH₵{{food.food.price}}</span>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <div class="payment-method mb-md-40">
+                                    <h5 class="text-light-black fw-600">Payment Method</h5>
+                                    <div class="method-type"> <i class="far fa-credit-card text-dark-white"></i>
+                                        <span class="text-light-white">Credit Card</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="price-table u-line">
+                                    <div class="item"> <span class="text-light-white">Item subtotal:</span>
+                                        <span class="text-light-white">GH₵{{order.get_cart_total}}</span>
+                                    </div>
+                                    <div class="item"> <span class="text-light-white">Tax and fees:</span>
+                                        <span class="text-light-white">GH₵0.00</span>
+                                    </div>
+                                </div>
+                                <div class="total-price padding-tb-10">
+                                    <h5 class="title text-light-black fw-700">Total: <span>GH₵{{order.get_cart_total}}</span></h5>
+                                </div>
+                            </div>
+                            <div class="col-12 d-flex"> <a href="#" class="btn-first white-btn fw-600 help-btn">Need Help?</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+   {% endblock content %}
