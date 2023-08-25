@@ -81,31 +81,90 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-7">
-                                <div class="payment-method mb-md-40">
-                                    <h5 class="text-light-black fw-600">Payment Method</h5>
-                                    <div class="method-type"> <i class="far fa-credit-card text-dark-white"></i>
-                                        <span class="text-light-white">Credit Card</span>
+                        
+                        <form id="order-processing">
+                                
+                            <div class="row">
+                                <div class="col-lg-7">
+                                    <div class="payment-method mb-md-40">
+                                        <h5 class="text-light-black fw-600">Payment Method</h5>
+                                        <div class="method-type"> <i class="far fa-credit-card text-dark-white"></i>
+                                            <span class="text-light-white">Credit Card</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-5">
-                                <div class="price-table u-line">
-                                    <div class="item"> <span class="text-light-white">Item subtotal:</span>
-                                        <span class="text-light-white">GH₵{{order.get_cart_total}}</span>
+                                <div class="col-lg-5">
+                                    <div class="price-table u-line">
+                                        <div class="item"> <span class="text-light-white">Item subtotal:</span>
+                                            <span class="text-light-white">GH₵{{order.get_cart_total}}</span>
+                                        </div>
+                                        <div class="item"> <span class="text-light-white">Tax and fees:</span>
+                                            <span class="text-light-white">GH₵0.00</span>
+                                        </div>
                                     </div>
-                                    <div class="item"> <span class="text-light-white">Tax and fees:</span>
-                                        <span class="text-light-white">GH₵0.00</span>
+                                    <div class="total-price padding-tb-10">
+                                        <h5 class="title text-light-black fw-700">Total: <span>GH₵{{order.get_cart_total}}</span></h5>
                                     </div>
                                 </div>
-                                <div class="total-price padding-tb-10">
-                                    <h5 class="title text-light-black fw-700">Total: <span>GH₵{{order.get_cart_total}}</span></h5>
+                                <div class="col-12 d-flex"> <input type="submit" class="btn-first white-btn fw-600 help-btn">
                                 </div>
                             </div>
-                            <div class="col-12 d-flex"> <a href="#" class="btn-first white-btn fw-600 help-btn">Need Help?</a>
-                            </div>
-                        </div>
+                        </form>
+
+                        <script src="https://js.paystack.co/v1/inline.js"></script>
+
+                        <script>
+                          const paymentForm = document.getElementById("order-processing");
+                          paymentForm.addEventListener("submit", payWithPaystack, false);
+                          function payWithPaystack(e) {
+                            e.preventDefault();
+                      
+                            let total = "{{order.get_cart_total}}";
+                            let email = "{{request.user.email}}";
+                      
+                            let handler = PaystackPop.setup({
+                              key: "pk_test_9d98872ae2ee8caedf67cb718658e0ea8bdd314e", // Replace with your public key
+                              email: email,
+                              amount: parseFloat(total) * 100,
+                              currency: "GHS",
+                              ref: "" + Math.floor(Math.random() * 1000000000 + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+                              // label: "Optional string that replaces customer email"
+                              onClose: function () {
+                                alert("Window closed.");
+                              },
+                              callback: function (response) {
+                                let message = "Payment complete! Reference: " + response.reference;
+                                let shippingInfo = {
+                                  total: total,
+                                };
+                      
+                                let url = "/process-order/";
+                      
+                                fetch(url, {
+                                  method: "POST",
+                                  headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRFToken": csrftoken,
+                                  },
+                      
+                                  body: JSON.stringify({ shipping: shippingInfo }),
+                                })
+                                  .then((reponse) => reponse.json())
+                      
+                                  .then((data) => {
+                                    alert("Transaction completed");
+                      
+                                    cart = {};
+                                    document.cookie =
+                                      "cart=" + JSON.stringify(cart) + ";domain=;path=/";
+                                    window.location.href = "{% url 'food' %}";
+                                  });
+                              },
+                            });
+                      
+                            handler.openIframe();
+                          }
+                        </script>
                     </div>
                 </div>
             </div>

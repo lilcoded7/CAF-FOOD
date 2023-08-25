@@ -4,7 +4,7 @@ from CAFFOOD.models.order import Order
 from CAFFOOD.models.order_item import OrderItem
 from CAFFOOD.models.customer import Customer
 from CAFFOOD.models.category import Category
-from CAFFOOD.utils import cookie_cart, cartData
+from CAFFOOD.utils import cookie_cart, cartData, generate_qr_code
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import get_user_model
@@ -30,7 +30,6 @@ def shop(request):
     total_cart  = data['total_cart']
     products = Food.objects.all()
     category = Category.objects.all()
-    
     context = {
         'products': products,
         'order': order,
@@ -38,7 +37,6 @@ def shop(request):
         'category':category
     }
     return render(request, 'shop.html', context)
-
 
 # @login_required
 def cart(request):
@@ -58,7 +56,7 @@ def updateItem(request):
     customer  = request.user.customer
     product   = Food.objects.get(id=productId)
     order, created = Order.objects.get_or_create(customer=customer, complete=False)
-    orderItem, created = OrderItem.objects.get_or_create(order=order, course=product)
+    orderItem, created = OrderItem.objects.get_or_create(order=order, food=product)
     if action == 'add':
         orderItem.quantity = (orderItem.quantity + 1)
     elif action == 'remove':
@@ -84,17 +82,10 @@ def process_order(request):
     total   = float(data['shipping']['total'])
     if total == float(order.get_cart_total):
         order.complete = True 
+        order.qr_code=generate_qr_code
     order.save()
     return JsonResponse('payment complete !', safe=False)
 
-def checkout(request):
-    # data       = cartData(request)
-    # items       = data['items']
-    # order       = data['order']
-    # total_cart  = data['total_cart']
-    # category = Category.objects.all()
-    # context = {'items':items, 'order':order, 'total_cart':total_cart,'category':category}
-    return render(request, 'checkout.html', context)
 
 
 

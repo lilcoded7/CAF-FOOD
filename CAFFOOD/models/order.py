@@ -1,12 +1,16 @@
 from setup.basemodel import TimeBaseModel
 from CAFFOOD.models.customer import Customer
 from django.db import models 
+import random
+import string
+
 
 
 class Order(TimeBaseModel):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     received = models.BooleanField(default=False)
     complete = models.BooleanField(default=False)
+    qr_code = models.ImageField(blank=True, null=True)
 
     @property
     def get_cart_total(self):
@@ -22,3 +26,5 @@ class Order(TimeBaseModel):
 
     def __str__(self):
         return str(self.id) 
+
+    

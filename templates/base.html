@@ -100,8 +100,8 @@
                     <div class="col-12 mainNavCol">
                         <!-- logo -->
                         <div class="logo mainNavCol">
-                            <a href="##">
-                                <a style="font-size: 20px; display: inline-block; font-family: Arial;" href="##">CAF-<div style="font-size: 20px; display: inline-block; font-family: Arial; color: black;">FOOD</div></a>
+                            <a href="{% url 'food' %}">
+                                <a style="font-size: 20px; display: inline-block; font-family: Arial;" href="{% url 'food' %}">CAF-<div style="font-size: 20px; display: inline-block; font-family: Arial; color: black;">FOOD</div></a>
                                 <!-- <img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo"> -->
                             </a>
                         </div>
@@ -128,7 +128,7 @@
                         </div>
                         <div class="right-side fw-700 mainNavCol">
                             <div class="gem-points">
-                                <a href="#"> <i class="fas fa-concierge-bell"></i>
+                                <a href="{% url 'food' %}"> <i class="fas fa-concierge-bell"></i>
                                     <span>Order Now</span>
                                 </a>
                             </div>

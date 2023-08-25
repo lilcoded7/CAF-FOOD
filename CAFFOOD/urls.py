@@ -8,7 +8,6 @@ urlpatterns = [
     path('navbar/', views.navbar, name='navbar'),
     path('update-item/', views.updateItem, name='update-item'),
     path('process-order/', views.process_order, name='process-order'),
-    path('checkout/', views.checkout, name='checkout'),
     path('about/', views.about, name='about'),
 ]   
 
