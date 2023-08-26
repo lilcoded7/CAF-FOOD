@@ -4,7 +4,7 @@ from CAFFOOD.models.order import Order
 from CAFFOOD.models.order_item import OrderItem
 from CAFFOOD.models.customer import Customer
 from CAFFOOD.models.category import Category
-from CAFFOOD.utils import cookie_cart, cartData, generate_qr_code
+from CAFFOOD.utils import cookie_cart, cartData
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import get_user_model
@@ -81,11 +81,13 @@ def process_order(request):
     order, created = Order.objects.get_or_create(customer=customer, complete=False)
     total   = float(data['shipping']['total'])
     if total == float(order.get_cart_total):
-        order.complete = True 
-        order.qr_code=generate_qr_code
+        order.status()
+        order.generate_qr_code()
     order.save()
+    
     return JsonResponse('payment complete !', safe=False)
 
 
 
-
+def receipt(request):
+    return render(request, 'qrcode.html')

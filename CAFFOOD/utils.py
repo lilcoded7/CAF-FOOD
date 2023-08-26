@@ -56,26 +56,3 @@ def cartData(request):
         total_cart  = cookie_data['total_cart']
     return {'items':items, 'order':order,'total_cart':total_cart}
 
-def generate_random_code():
-    # Generate a random pin consisting of five digits
-    return ''.join(random.choices(string.digits, k=5))
-
-
-def generate_qr_code(self):
-    # Create a string representing the order details for the QR code
-    order_info = generate_random_code
-    # Generate the QR code image
-    qr = QRCode(
-        version=1,
-        error_correction=QRCodeOptions.ERROR_CORRECT_L,
-        box_size=10,
-        border=4,
-    )
-    qr.add_data(order_info)
-    qr.make(fit=True)
-    # Create an image from the QR code
-    qr_image = qr.make_image(fill_color="black", back_color="white")
-    # Convert the image to PNG format
-    buffer = BytesIO()
-    qr_image.save(buffer, format="PNG")
-    return qr_image

@@ -63,10 +63,10 @@
                                     {% for food in items %}
                                     <div class="checkout-product">
                                         <div class="img-name-value">
-                                            <div class="product-img">
-                                                <a href="#">
-                                                    <img src="{{food.food.imageURL}}" alt="#">
-                                                </a>
+                                            <div style="width: 80px;" class="product-img">
+                                                
+                                                <img style="object-fit: cover; width: 100%;" src="{{food.food.imageURL}}" alt="#">
+                                                
                                             </div>
                                             <div class="product-value"> <span class="text-light-white">{{food.quantity}}</span>
                                             </div>
