@@ -38,8 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #local app
     'CAFFOOD',
     'account',
+
+    # third party app
+   
 ]
 
 MIDDLEWARE = [
@@ -83,6 +87,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'setup.wsgi.application'
+LOGIN_URL = '/account/login/' 
 
 
 # Database

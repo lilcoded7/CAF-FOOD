@@ -16,7 +16,7 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="#">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="#">
     <link rel="apple-touch-icon-precomposed" href="#">
-    <link rel="shortcut icon" href="#">
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'register/assets/img/apple-icon.png' %}">
     <!-- Bootstrap -->
     <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
     <!-- Fontawesome -->
@@ -141,7 +141,7 @@
                             <!-- mobile search -->
                             <!-- user account -->
                             <div class="user-details p-relative">
-                                <a href="#" class="text-light-white fw-500">
+                                <a href="{% url 'dashboard' %}" class="text-light-white fw-500">
                                     <img src="{% static 'assets/img/user-1.png' %}" class="rounded-circle" alt="userimg"> <span>Hi, Kate</span>
                                 </a>
                             </div>

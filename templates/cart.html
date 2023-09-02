@@ -31,12 +31,11 @@
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class="recipt-name full-width padding-tb-10 pt-0">
-                                        <h5 class="text-light-black fw-600">Dill To:</h5>
-                                        <span class="text-light-white ">Jhon Deo</span>
-                                        <span class="text-light-white ">Home</span>
-                                        <span class="text-light-white ">314 79th St</span>
-                                        <span class="text-light-white ">Rite Aid, Brooklyn, NY, 11209</span>
-                                        <p class="text-light-white ">(347) 123456789</p>
+                                        <h5 class="text-light-black fw-600">Bill To:</h5>
+                                        <span class="text-light-white ">{{request.user.username}}</span>
+                                        <span class="text-light-white ">{{request.user.email}}</span>
+                                        <span class="text-light-white ">{{request.user.address}}</span>
+                                        <span class="text-light-white ">{{request.user.phone}}</span>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
@@ -157,7 +156,7 @@
                                     cart = {};
                                     document.cookie =
                                       "cart=" + JSON.stringify(cart) + ";domain=;path=/";
-                                    window.location.href = "{% url 'food' %}";
+                                    window.location.href = "{% url 'receipt' order.pk %}";
                                   });
                               },
                             });

@@ -52,3 +52,10 @@ def send_customer_verify_code(email):
         'to_email':email
         }
     EmailSender().send_email(data)
+
+
+def check_user_status(email) -> bool:
+    if User.objects.filter(email=email, is_admin=True):
+        return True
+    else:
+        return False

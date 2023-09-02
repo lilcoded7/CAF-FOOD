@@ -9,7 +9,12 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import get_user_model
 from django.contrib import messages
+from django.db.models import Sum, F, Value
+from django.db.models.functions import Coalesce
+from django.db.models import DecimalField 
 import json
+import cv2
+
 
 User = get_user_model()
 # Create your views here.
@@ -38,7 +43,7 @@ def shop(request):
     }
     return render(request, 'shop.html', context)
 
-# @login_required
+@login_required
 def cart(request):
     data       = cartData(request)
     items       = data['items']
@@ -48,7 +53,6 @@ def cart(request):
     context = {'items':items, 'order':order,'total_cart':total_cart,'category':category}
     return render(request, 'cart.html', context)
 
-#  add to cart
 def updateItem(request):
     data      = json.loads(request.body)
     productId = data['productId']
@@ -83,11 +87,52 @@ def process_order(request):
     if total == float(order.get_cart_total):
         order.status()
         order.generate_qr_code()
+        order.get_order_total_price()
     order.save()
-    
     return JsonResponse('payment complete !', safe=False)
 
+@login_required
+def receipt(request, pk):
+    user = request.user 
+    qr_code = get_object_or_404(Order, customer__user=user, complete=True, id=pk)
+    return render(request, 'qrcode.html', {'qr_code':qr_code})
 
+@login_required
+def dashboard(request):
+    user = request.user 
+    orders = Food.objects.filter(orderitem__order__complete=True, orderitem__order__customer__user=user).count()
+    order_food = OrderItem.objects.filter(order__complete=True, order__customer__user=user)
+    context = {'orders':orders, 'order_food':order_food}
+    return render(request, 'dashboard.html', context)
 
-def receipt(request):
-    return render(request, 'qrcode.html')
+def read_qr_code(request):
+    if request.method == 'POST':
+        image = request.FILES['image'].read()
+        image = np.asarray(bytearray(image), dtype=np.uint8)
+        image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        qr_code_detector = cv2.QRCodeDetector()
+        retval, decoded_info, points, _ = qr_code_detector.detectAndDecode(gray)
+
+        if retval:
+            response_data = {
+                'message': 'QR Code detected',
+                'decoded_info': decoded_info,
+                'qr_code_points': points.tolist(),
+            }
+        else:
+            response_data = {
+                'message': 'No QR Code detected in the image.',
+            }
+
+        return JsonResponse(response_data)
+
+    return JsonResponse({'message': 'Invalid request method.'}, status=400)
+
+def admin_dashboard(request):
+    orders = Order.objects.filter(complete=True).count()
+    order_price = Order.objects.aggregate(total=Coalesce(Sum('order_price'), Value(0, output_field=DecimalField())))
+    total_order_price = order_price['total']
+    order_items = OrderItem.objects.filter(order__complete=True)
+    return render(request, 'admin.html', {'orders':orders, 'order_items':order_items, 'total_order_price':total_order_price})
+    

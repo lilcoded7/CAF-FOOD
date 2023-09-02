@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from CAFFOOD.models.customer import Customer
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
-from account.utils import EmailSender, send_customer_verify_code
+from account.utils import EmailSender, send_customer_verify_code, check_user_status
 
 
 # Create your views here.
@@ -26,7 +26,7 @@ def register(request):
             messages.info(request, 'registration failed, enter correct details')
     else:
         form = UserRegisterFrom()
-    return render(request, 'register.html', {'form':form})
+    return render(request, 'auths/register.html', {'form':form})
 
 def login_view(request):
     form = LoginForm()
@@ -38,16 +38,34 @@ def login_view(request):
             user = authenticate(email=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('food')
+                if not check_user_status(email):
+                    return redirect('food')
+                return redirect('admin-dashboard')
             else:
                 messages.info(request, 'invalid credentials, login fialed!')
         else:
             form = LoginForm()
-    return render(request, 'login.html', {'form':form})
+    return render(request, 'auths/login.html', {'form':form})
 
 def logout_view(request):
     logout(request)
-    return redirect('ood')
+    return redirect('food')
+
+
+def send_email_verify_code(request):
+    if request.method == 'POST':
+        form = EmailForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            send_customer_verify_code(email)
+            messages.success(request, 'a verification code has been sent to your email address')
+            return redirect('verify-customer-code')
+        else:
+            messages.error(request, 'invald code!, enter correct code')
+    else:
+        form = EmailForm()
+    return render(request, 'auths/email.html', {'form': form})
+
 
 def verify_customer_email_code(request):
     if request.method == 'POST':
@@ -68,21 +86,8 @@ def verify_customer_email_code(request):
             messages.error(request, 'invald code!, enter correct code')
     else:
         form = CodeForm()
-    return render(request, 'verify_code.html', {'form': form})
+    return render(request, 'auths/code.html', {'form': form})
 
-def send_email_verify_code(request):
-    if request.method == 'POST':
-        form = EmailForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            send_customer_verify_code(email)
-            messages.success(request, 'a verification code has been sent to your account')
-            return redirect('verify-customer-code')
-        else:
-            messages.error(request, 'invald code!, enter correct code')
-    else:
-        form = EmailForm()
-    return render(request, 'email.html', {'form': form})
 
 def reset_password(request):
     if request.method == 'POST':
@@ -100,4 +105,4 @@ def reset_password(request):
             messages.error(request, 'password reset failed. Please enter a valid code and password.')
     else:
         form = ResetPasswordForm()
-    return render(request, 'reset_password.html', {'form': form})
+    return render(request, 'auths/reset_password.html', {'form': form})

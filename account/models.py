@@ -43,6 +43,7 @@ class CustomUser(AbstractBaseUser):
     username    = models.CharField(max_length=100, unique=True)
     email       = models.EmailField(unique=True)
     phone       = models.CharField(max_length=20)
+    address     = models.CharField(max_length=100, null=True, blank=True)
     verify_code = models.CharField(max_length=100)
     ref_code    = models.CharField(max_length=6, null=True, blank=True)
     last_login  = models.DateTimeField(auto_now_add=True)

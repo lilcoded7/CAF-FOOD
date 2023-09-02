@@ -9,6 +9,10 @@ urlpatterns = [
     path('update-item/', views.updateItem, name='update-item'),
     path('process-order/', views.process_order, name='process-order'),
     path('about/', views.about, name='about'),
-    path('receipt/', views.receipt, name='receipt')
+    path('receipt/<int:pk>/', views.receipt, name='receipt'),
+    path('customer/dashboard/', views.dashboard, name='dashboard'),
+    path('dashboard/admin/', views.admin_dashboard, name='admin-dashboard'),
+    path('qr-code-reader/', views.read_qr_code, name='qr_code_reader')
+
 ]   
 
