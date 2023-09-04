@@ -12,8 +12,11 @@ from django.contrib import messages
 from django.db.models import Sum, F, Value
 from django.db.models.functions import Coalesce
 from django.db.models import DecimalField 
+from CAFFOOD.models.used_code import UsedCode
+from pyzbar.pyzbar import decode
 import json
 import cv2
+import time
 
 
 User = get_user_model()
@@ -105,29 +108,30 @@ def dashboard(request):
     context = {'orders':orders, 'order_food':order_food}
     return render(request, 'dashboard.html', context)
 
+def scan_qrcode(request):
+    return render(request, 'qrcode_result.html')
+
+
 def read_qr_code(request):
-    if request.method == 'POST':
-        image = request.FILES['image'].read()
-        image = np.asarray(bytearray(image), dtype=np.uint8)
-        image = cv2.imdecode(image, cv2.IMREAD_COLOR)
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        qr_code_detector = cv2.QRCodeDetector()
-        retval, decoded_info, points, _ = qr_code_detector.detectAndDecode(gray)
+    cap = cv2.VideoCapture(0)
+    cap.set(3, 640)
+    cap.set(4, 480)
+    camera = True
+    while camera == True:
+        success, frame = cap.read()
+        for code in decode(frame):
+            if code.decode('utf-8') not in used_code:
+                print('qrcode type', code.type)
+                print('qrcode type', code.decode('utf-8'))
+                used_code.append(code.decode('utf-8'))
+                time.sleep(5)
+            else:
+                print('Code has already been used!')
+                time.sleep(5)
+        cv2.imshow('CAF|FOOD', frame)
+        cv2.waitKey(1)
 
-        if retval:
-            response_data = {
-                'message': 'QR Code detected',
-                'decoded_info': decoded_info,
-                'qr_code_points': points.tolist(),
-            }
-        else:
-            response_data = {
-                'message': 'No QR Code detected in the image.',
-            }
-
-        return JsonResponse(response_data)
-
-    return JsonResponse({'message': 'Invalid request method.'}, status=400)
+    return render(request, 'qrcode_result.html')
 
 def admin_dashboard(request):
     orders = Order.objects.filter(complete=True).count()
