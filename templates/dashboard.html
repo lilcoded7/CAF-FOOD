@@ -88,17 +88,17 @@
       <li>
         <a href="##" class="has-icon">
           <span class="icon"><i class="mdi mdi-help-circle"></i></span>
-          <span class="menu-item-label">Add Food</span>
+          <span class="menu-item-label">Manue</span>
         </a>
       </li>
       <li>
-        <a href="##" class="has-icon">
+        <a href="{% url 'food' %}" class="has-icon">
           <span class="icon"><i class="mdi mdi-github-circle"></i></span>
           <span class="menu-item-label">Shop</span>
         </a>
       </li>
       <li>
-        <a href="##" class="has-icon">
+        <a href="{% url 'logout' %}" class="has-icon">
           <span class="icon"><i class="mdi mdi-github-circle"></i></span>
           <span class="menu-item-label">Logout</span>
         </a>
@@ -110,7 +110,7 @@
 <section class="is-title-bar">
   <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
     <ul>
-      <li>Manage</li>
+      <li>Your</li>
       <li>Orders</li>
     </ul>
     
@@ -146,10 +146,10 @@
           <div class="flex items-center justify-between">
             <div class="widget-label">
               <h3>
-                wallet
+                Received
               </h3>
               <h1>
-                ${{total_order_price}}
+                {{order_status}}
               </h1>
             </div>
             <span class="icon widget-icon text-blue-500"><i class="mdi mdi-cart-outline mdi-48px"></i></span>
@@ -219,10 +219,10 @@
             <td class="actions-cell">
               <div class="buttons right nowrap">
                 <button class="button small green --jb-modal"  data-target="sample-modal-2" type="button">
-                  <span class="icon"> <a href="##" style="padding: 5px;"></a><i class="mdi mdi-eye"></i></span>
+                  <span class="icon"> <a href="{% url 'receipt' item.order.pk %}" style="padding: 5px;">receipt</a><i class="mdi mdi-eye"></i></span>
                 </button>
                 <button class="button small red --jb-modal" data-target="sample-modal" type="button">
-                  <span class="icon"><a href="##" style="padding: 5px;"></a><i class="mdi mdi-trash-can"></i></span>
+                  <span class="icon"><a href="##" style="padding: 5px;">Delete</a><i class="mdi mdi-trash-can"></i></span>
                 </button>
               </div>
             </td>

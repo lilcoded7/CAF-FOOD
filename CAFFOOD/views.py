@@ -13,6 +13,7 @@ from django.db.models import Sum, F, Value
 from django.db.models.functions import Coalesce
 from django.db.models import DecimalField 
 from CAFFOOD.models.used_code import UsedCode
+from account.utils import check_user_status
 from pyzbar.pyzbar import decode
 import json
 import cv2
@@ -103,9 +104,13 @@ def receipt(request, pk):
 @login_required
 def dashboard(request):
     user = request.user 
-    orders = Food.objects.filter(orderitem__order__complete=True, orderitem__order__customer__user=user).count()
-    order_food = OrderItem.objects.filter(order__complete=True, order__customer__user=user)
-    context = {'orders':orders, 'order_food':order_food}
+    if not check_user_status(user.email):
+        orders = Food.objects.filter(orderitem__order__complete=True, orderitem__order__customer__user=user).count()
+        order_food = OrderItem.objects.filter(order__complete=True, order__customer__user=user)
+        order_status = Order.objects.filter(customer__user=user, received=True).count()
+    else:
+        return redirect('admin-dashboard')
+    context = {'orders':orders, 'order_food':order_food, 'order_status':order_status}
     return render(request, 'dashboard.html', context)
 
 def scan_qrcode(request):
@@ -117,19 +122,22 @@ def read_qr_code(request):
     cap.set(3, 640)
     cap.set(4, 480)
     camera = True
-    while camera == True:
+    while camera:
         success, frame = cap.read()
-        for code in decode(frame):
-            if code.decode('utf-8') not in used_code:
-                print('qrcode type', code.type)
-                print('qrcode type', code.decode('utf-8'))
-                used_code.append(code.decode('utf-8'))
+        codes = decode(frame)
+        if codes:
+            for code in codes:
+                qr_data = code.data.decode('utf-8')
+                print('QR Code Type:', code.type)
+                print('QR Code Data:', qr_data)
                 time.sleep(5)
-            else:
-                print('Code has already been used!')
-                time.sleep(5)
+        else:
+            print('No QR codes detected!')
+            time.sleep(5)
         cv2.imshow('CAF|FOOD', frame)
         cv2.waitKey(1)
+    cap.release()
+    cv2.destroyAllWindows()
 
     return render(request, 'qrcode_result.html')
 

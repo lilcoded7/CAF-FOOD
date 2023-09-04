@@ -43,7 +43,6 @@ class Order(TimeBaseModel):
 
     def status(self):
         self.complete=True
-        self.received=True
         self.item_status='paid'
         self.save()
     
