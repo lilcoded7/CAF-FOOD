@@ -1,5 +1,6 @@
 from setup.basemodel import TimeBaseModel
 from CAFFOOD.models.category import Category
+from CAFFOOD.models.menu import Menu
 from django.db import models 
 
 
@@ -11,6 +12,7 @@ class Food(TimeBaseModel):
     image = models.ImageField(null=True, blank=True)
     description = models.CharField(max_length=200, null=True, blank=True) 
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, null=True, blank=True)
 
     @property 
     def imageURL(self):

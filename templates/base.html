@@ -127,11 +127,28 @@
                             </form>
                         </div>
                         <div class="right-side fw-700 mainNavCol">
-                            <div class="gem-points">
-                                <a href="{% url 'food' %}"> <i class="fas fa-concierge-bell"></i>
-                                    <span>Manue</span>
+                            
+                            <div class="user-details p-relative">
+                                <a href="#"> <i class="fas fa-concierge-bell"></i>
+                                    <span>Menu</span>
                                 </a>
+                                <div class="user-dropdown">
+                                    {% for menu in all_menu %}
+                                    <ul style="display: inline-block; width: 100px;">
+                                        <li>
+                                            <a href="{% url 'menu' menu.id %}">
+                                                <div class="icon"><i class="flaticon-takeaway"></i>
+                                                </div> <span class="details">{{menu.name}}</span>
+                                            </a>
+                                        </li>
+                                        
+                                    </ul>
+                                    {% endfor %}
+                                    <div class="user-footer"> <span class="text-light-black">Not Jhon?</span> <a href="#">Sign Out</a>
+                                    </div>
+                                </div>
                             </div>
+                            
                             
                             <!-- mobile search -->
                             <div class="mobile-search">
@@ -142,7 +159,7 @@
                             <!-- user account -->
                             <div class="user-details p-relative">
                                 <a href="{% url 'dashboard' %}" class="text-light-white fw-500">
-                                    <img src="{% static 'assets/img/user-1.png' %}" class="rounded-circle" alt="userimg"> <span>Hi, Kate</span>
+                                    <img src="{% static 'assets/img/user-1.png' %}" class="rounded-circle" alt="userimg"> <span>Hi, {{request.user.username}}</span>
                                 </a>
                             </div>
                             <!-- mobile search -->

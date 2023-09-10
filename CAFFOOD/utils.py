@@ -3,6 +3,7 @@ from CAFFOOD.models.order import Order
 from CAFFOOD.models.order_item import OrderItem
 from CAFFOOD.models.customer import Customer
 from django.http import JsonResponse
+from CAFFOOD.models.menu import Menu
 import json
 
 
@@ -56,3 +57,6 @@ def cartData(request):
         total_cart  = cookie_data['total_cart']
     return {'items':items, 'order':order,'total_cart':total_cart}
 
+def food_menu():
+    menu = Menu.objects.all()
+    return menu

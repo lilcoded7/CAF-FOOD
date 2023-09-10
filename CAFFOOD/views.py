@@ -13,6 +13,7 @@ from django.db.models import Sum, F, Value
 from django.db.models.functions import Coalesce
 from django.db.models import DecimalField 
 from CAFFOOD.models.used_code import UsedCode
+from CAFFOOD.models.menu import Menu
 from account.utils import check_user_status
 from pyzbar.pyzbar import decode
 import json
@@ -24,14 +25,6 @@ User = get_user_model()
 # Create your views here.
 
 
-def navbar(request):
-    data       = cartData(request)
-    items       = data['items']
-    order       = data['order']
-    total_cart  = data['total_cart'] 
-    category = Category.objects.all()
-    context = {'category':category, 'total_cart':total_cart}
-    return render(request, 'navbar.html', context)
 
 def shop(request):
     data       = cartData(request)
@@ -39,11 +32,13 @@ def shop(request):
     total_cart  = data['total_cart']
     products = Food.objects.all()
     category = Category.objects.all()
+    all_menu = Menu.objects.all()
     context = {
         'products': products,
         'order': order,
         'total_cart': total_cart,  
-        'category':category
+        'category':category,
+        'all_menu':all_menu
     }
     return render(request, 'shop.html', context)
 
@@ -53,8 +48,9 @@ def cart(request):
     items       = data['items']
     order       = data['order']
     total_cart  = data['total_cart']
+    all_menu = Menu.objects.all()
     category = Category.objects.all()
-    context = {'items':items, 'order':order,'total_cart':total_cart,'category':category}
+    context = {'items':items, 'order':order,'total_cart':total_cart,'category':category, 'all_menu':all_menu}
     return render(request, 'cart.html', context)
 
 def updateItem(request):
@@ -79,8 +75,9 @@ def about(request):
     items       = data['items']
     order       = data['order']
     total_cart  = data['total_cart']
+    all_menu = Menu.objects.all()
     category = Category.objects.all()
-    context = {'items':items, 'order':order,'total_cart':total_cart,'category':category}
+    context = {'items':items, 'order':order,'total_cart':total_cart,'category':category, 'all_menu':all_menu}
     return render(request, 'about.html', context)
 
 def process_order(request):
@@ -114,7 +111,7 @@ def dashboard(request):
     return render(request, 'dashboard.html', context)
 
 def scan_qrcode(request):
-    return render(request, 'qrcode_result.html')
+    return render(request, 'code.html')
 
 
 def read_qr_code(request):
@@ -148,3 +145,14 @@ def admin_dashboard(request):
     order_items = OrderItem.objects.filter(order__complete=True)
     return render(request, 'admin.html', {'orders':orders, 'order_items':order_items, 'total_order_price':total_order_price})
     
+
+def food_menu_view(request, pk):
+    data       = cartData(request)
+    order       = data['order']
+    total_cart  = data['total_cart']
+    menu = Menu.objects.get(id=pk)
+    menu_food = Food.objects.filter(menu=menu)
+    all_menu = Menu.objects.all()
+    print(menu_food)
+    context = {'menu':menu, 'menu_food':menu_food, 'order': order,'total_cart': total_cart, 'all_menu':all_menu}
+    return render(request, 'menu.html', context)
