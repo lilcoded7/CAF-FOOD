@@ -126,7 +126,6 @@ def dashboard(request):
 def scan_qrcode(request):
     return render(request, 'code.html')
 
-
 def read_qr_code(request):
     cap = cv2.VideoCapture(0)
     cap.set(3, 640)
@@ -158,7 +157,6 @@ def admin_dashboard(request):
     order_items = OrderItem.objects.filter(order__complete=True)
     return render(request, 'admin.html', {'orders':orders, 'order_items':order_items, 'total_order_price':total_order_price})
     
-
 def food_menu_view(request, pk):
     data       = cartData(request)
     order       = data['order']
@@ -172,7 +170,6 @@ def food_menu_view(request, pk):
         return render(request, 'search_food.html', {'foods':food})
     context = {'menu':menu, 'menu_food':menu_food, 'order': order,'total_cart': total_cart, 'all_menu':all_menu}
     return render(request, 'menu.html', context)
-
 
 def search_food(request):
     data = cartData(request)

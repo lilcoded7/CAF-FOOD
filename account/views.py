@@ -51,7 +51,6 @@ def logout_view(request):
     logout(request)
     return redirect('food')
 
-
 def send_email_verify_code(request):
     if request.method == 'POST':
         form = EmailForm(request.POST)
@@ -65,7 +64,6 @@ def send_email_verify_code(request):
     else:
         form = EmailForm()
     return render(request, 'auths/email.html', {'form': form})
-
 
 def verify_customer_email_code(request):
     if request.method == 'POST':
@@ -88,6 +86,20 @@ def verify_customer_email_code(request):
         form = CodeForm()
     return render(request, 'auths/code.html', {'form': form})
 
+
+def send_reset_password_email_verify_code(request):
+    if request.method == 'POST':
+        form = EmailForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            send_customer_verify_code(email)
+            messages.success(request, 'a verification code has been sent to your email address')
+            return redirect('password-reset')
+        else:
+            messages.error(request, 'invald code!, enter correct code')
+    else:
+        form = EmailForm()
+    return render(request, 'auths/email.html', {'form': form})
 
 def reset_password(request):
     if request.method == 'POST':
