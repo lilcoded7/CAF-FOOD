@@ -62,12 +62,14 @@
                                     {% for food in items %}
                                     <div class="checkout-product">
                                         <div class="img-name-value">
-                                            <div style="width: 80px;" class="product-img">
+                                            <div style="width: 80px; height: 100px;" class="product-img">
                                                 
-                                                <img style="object-fit: cover; width: 100%;" src="{{food.food.imageURL}}" alt="#">
+                                                <img style="object-fit: cover; width: 100%; height: 100%;" src="{{food.food.imageURL}}" alt="#">
                                                 
                                             </div>
                                             <div class="product-value"> <span class="text-light-white">{{food.quantity}}</span>
+                                                <img style="width: 16px;" data-product ="{{food.food.id}}" data-action="remove" class="update-cart" src="{% static 'down.png' %}" alt="">
+                                                <img style="width: 20px;" data-product ="{{food.food.id}}" data-action="add" class="update-cart" src="{% static 'top.jpg' %}" alt="">
                                             </div>
                                             <div class="product-name"> <span><a href="#" class="text-light-white">{{food.food.name}}</a></span>
                                             </div>

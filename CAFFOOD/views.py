@@ -33,6 +33,10 @@ def shop(request):
     products = Food.objects.all()
     category = Category.objects.all()
     all_menu = Menu.objects.all()
+    if request.method == 'POST':
+        food_name = request.POST.get('food_name')
+        foods = Food.objects.filter(name__icontains=food_name)
+        return render(request, 'search_food.html', {'foods':foods})
     context = {
         'products': products,
         'order': order,
@@ -50,7 +54,11 @@ def cart(request):
     total_cart  = data['total_cart']
     all_menu = Menu.objects.all()
     category = Category.objects.all()
-    context = {'items':items, 'order':order,'total_cart':total_cart,'category':category, 'all_menu':all_menu}
+    if request.method == 'POST':
+        food_name = request.POST.get('food_name')
+        foods = Food.objects.filter(name__icontains=food_name)
+        return render(request, 'search_food.html', {'foods':foods})
+    context = {'items':items, 'order':order,'total_cart':total_cart,'category':category, 'foods':foods, 'all_menu':all_menu}
     return render(request, 'cart.html', context)
 
 def updateItem(request):
@@ -77,6 +85,11 @@ def about(request):
     total_cart  = data['total_cart']
     all_menu = Menu.objects.all()
     category = Category.objects.all()
+    food_name = request.POST.get('food_name')
+    if request.method == 'POST':
+        food_name = request.POST.get('food_name')
+        foods = Food.objects.filter(name__icontains=food_name)
+        return render(request, 'search_food.html', {'foods':foods})
     context = {'items':items, 'order':order,'total_cart':total_cart,'category':category, 'all_menu':all_menu}
     return render(request, 'about.html', context)
 
@@ -153,6 +166,36 @@ def food_menu_view(request, pk):
     menu = Menu.objects.get(id=pk)
     menu_food = Food.objects.filter(menu=menu)
     all_menu = Menu.objects.all()
-    print(menu_food)
+    if request.method == 'POST':
+        food_name = request.POST.get('food_name')
+        foods = Food.objects.filter(name__icontains=food_name)
+        return render(request, 'search_food.html', {'foods':food})
     context = {'menu':menu, 'menu_food':menu_food, 'order': order,'total_cart': total_cart, 'all_menu':all_menu}
     return render(request, 'menu.html', context)
+
+
+def search_food(request):
+    data = cartData(request)
+    items       = data['items']
+    order       = data['order']
+    total_cart  = data['total_cart']
+    category = Category.objects.all()
+    all_menu = Menu.objects.all()
+    food_name = request.POST.get('food_name')
+    if food_name:
+        specific_food = Food.objects.filter(name=food_name).first()
+        if specific_food:
+            foods = [specific_food]
+        else:
+            foods = Food.objects.filter(name__icontains=food_name)
+    else:
+        foods = Food.objects.all()
+    context = {
+        'items':items,
+        'foods': foods,
+        'order': order,
+        'total_cart': total_cart,  
+        'category': category,
+        'all_menu': all_menu
+    }
+    return render(request, 'search_food.html', context)

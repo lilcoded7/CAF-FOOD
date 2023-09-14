@@ -57,6 +57,3 @@ def cartData(request):
         total_cart  = cookie_data['total_cart']
     return {'items':items, 'order':order,'total_cart':total_cart}
 
-def food_menu():
-    menu = Menu.objects.all()
-    return menu

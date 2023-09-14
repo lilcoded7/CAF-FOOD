@@ -107,22 +107,20 @@
                         </div>
                         <!-- logo -->
                         <div class="main-search mainNavCol">
-                            <form class="main-search search-form full-width">
+                            <form method="POST" class="main-search search-form full-width" enctype="multipart/form-data">
+                                {% csrf_token %}
                                 <div class="row">
                                     <!-- location picker -->
                                     <div class="col-lg-6 col-md-5">
-                                        <div class="location-picker">
-                                            <input type="text" class="form-control" placeholder="Enter a new address">
-                                        </div>
+                                        
                                     </div>
-                                    <!-- location picker -->
-                                    <!-- search -->
+                                    
                                     <div class="col-lg-6 col-md-7">
-                                        <div class="search-box padding-10">
-                                            <input type="text" class="form-control" placeholder="Pizza, Burger, Chinese">
+                                        <div class="padding-10">
+                                            <input style="width: 240px; display: inline-block;" type="text" name="food_name" class="form-control" placeholder="Pizza, Burger, Chinese">
+                                            <input  style="display: inline-block;" type="submit">
                                         </div>
                                     </div>
-                                    <!-- search -->
                                 </div>
                             </form>
                         </div>
