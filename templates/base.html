@@ -101,7 +101,7 @@
                         <!-- logo -->
                         <div class="logo mainNavCol">
                             <a href="{% url 'food' %}">
-                                <a style="font-size: 20px; display: inline-block; font-family: Arial;" href="{% url 'food' %}">CAF-<div style="font-size: 20px; display: inline-block; font-family: Arial; color: black;">FOOD</div></a>
+                                <a style="font-size: 20px; display: inline-block; font-family: Arial;" href="{% url 'food' %}">CAF | <div style="font-size: 20px; display: inline-block; font-family: Arial; color: black;">FOOD</div></a>
                                 <!-- <img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo"> -->
                             </a>
                         </div>
@@ -118,7 +118,7 @@
                                     <div class="col-lg-6 col-md-7">
                                         <div class="padding-10">
                                             <input style="width: 240px; display: inline-block;" type="text" name="food_name" class="form-control" placeholder="Pizza, Burger, Chinese">
-                                            <input  style="display: inline-block;" type="submit">
+                                            <button style="padding: 5px; background-color: rgb(38, 168, 168); color: white; border-radius: 3px;">search</button>
                                         </div>
                                     </div>
                                 </div>
@@ -200,10 +200,10 @@
                     </div>
                     <div class="col-sm-12 mobile-search">
                         <div class="mobile-address">
-                            <a href="#" class="delivery-add" data-toggle="modal" data-target="#address-box"> <span class="address">Brooklyn, NY</span>
+                            <a href="#" class="delivery-add" data-toggle="modal" data-target="#address-box"> <span class="address">Brows down: order food now</span>
                             </a>
                         </div>
-                        <div class="sorting-addressbox"> <span class="full-address text-light-green">Brooklyn, NY 10041</span>
+                        <div class="sorting-addressbox"> <span class="full-address text-light-green">Delight in every bite.</span>
                             <div class="btns">
                                 <div class="filter-btn">
                                     <button type="button"><i class="fas fa-sliders-h text-light-green fs-18"></i>
@@ -454,12 +454,15 @@
     <div class="modal fade" id="search-box">
         <div class="modal-dialog">
             <div class="modal-content">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <div class="search-box p-relative full-width">
-                        <input type="text" class="form-control" placeholder="Pizza, Burger, Chinese">
+                        <input type="text" name="food_name" class="form-control" placeholder="Pizza, Burger, Chinese">
                     </div>
                 </div>
+                </form>
                 <div class="modal-body"></div>
             </div>
         </div>

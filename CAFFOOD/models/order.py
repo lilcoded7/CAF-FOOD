@@ -23,7 +23,16 @@ class Order(TimeBaseModel):
             url = self.qr_code.url
         except:
             url = ''
-        return url 
+        return url  
+    
+    @property
+    def delete_order(self):
+        try:
+            order_id = self.id
+        except:
+            order_id = ''
+        return id
+
 
     @property
     def get_cart_total(self):

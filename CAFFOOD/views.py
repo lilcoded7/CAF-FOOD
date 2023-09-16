@@ -16,7 +16,7 @@ from CAFFOOD.models.used_code import UsedCode
 from CAFFOOD.models.menu import Menu
 from account.utils import check_user_status
 from pyzbar.pyzbar import decode
-import json
+from decimal import Decimal
 import cv2
 import time
 
@@ -36,7 +36,15 @@ def shop(request):
     if request.method == 'POST':
         food_name = request.POST.get('food_name')
         foods = Food.objects.filter(name__icontains=food_name)
-        return render(request, 'search_food.html', {'foods':foods})
+        context = context = {
+        'products': products,
+        'order': order,
+        'total_cart': total_cart,  
+        'category':category,
+        'all_menu':all_menu,
+        'foods':foods
+        }
+        return render(request, 'search_food.html', context)
     context = {
         'products': products,
         'order': order,
@@ -57,8 +65,16 @@ def cart(request):
     if request.method == 'POST':
         food_name = request.POST.get('food_name')
         foods = Food.objects.filter(name__icontains=food_name)
-        return render(request, 'search_food.html', {'foods':foods})
-    context = {'items':items, 'order':order,'total_cart':total_cart,'category':category, 'foods':foods, 'all_menu':all_menu}
+        context = context = {
+        'products': products,
+        'order': order,
+        'total_cart': total_cart,  
+        'category':category,
+        'all_menu':all_menu,
+        'foods':foods
+        }
+        return render(request, 'search_food.html', context)
+    context = {'items':items, 'order':order,'total_cart':total_cart,'category':category, 'all_menu':all_menu}
     return render(request, 'cart.html', context)
 
 def updateItem(request):
@@ -89,7 +105,15 @@ def about(request):
     if request.method == 'POST':
         food_name = request.POST.get('food_name')
         foods = Food.objects.filter(name__icontains=food_name)
-        return render(request, 'search_food.html', {'foods':foods})
+        context = context = {
+        'products': products,
+        'order': order,
+        'total_cart': total_cart,  
+        'category':category,
+        'all_menu':all_menu,
+        'foods':foods
+        }
+        return render(request, 'search_food.html', context)
     context = {'items':items, 'order':order,'total_cart':total_cart,'category':category, 'all_menu':all_menu}
     return render(request, 'about.html', context)
 
@@ -153,10 +177,10 @@ def read_qr_code(request):
 def admin_dashboard(request):
     orders = Order.objects.filter(complete=True).count()
     order_price = Order.objects.aggregate(total=Coalesce(Sum('order_price'), Value(0, output_field=DecimalField())))
-    total_order_price = order_price['total']
+    total_order_price = Decimal(order_price['total']).quantize(Decimal('0.00'))  # Round to two decimal places
     order_items = OrderItem.objects.filter(order__complete=True)
-    return render(request, 'admin.html', {'orders':orders, 'order_items':order_items, 'total_order_price':total_order_price})
-    
+    return render(request, 'admin.html', {'orders': orders, 'order_items': order_items, 'total_order_price': total_order_price})
+
 def food_menu_view(request, pk):
     data       = cartData(request)
     order       = data['order']
@@ -167,7 +191,13 @@ def food_menu_view(request, pk):
     if request.method == 'POST':
         food_name = request.POST.get('food_name')
         foods = Food.objects.filter(name__icontains=food_name)
-        return render(request, 'search_food.html', {'foods':food})
+        context = context = {
+        'order': order,
+        'total_cart': total_cart,
+        'all_menu':all_menu,
+        'foods':foods
+        }
+        return render(request, 'search_food.html', context)
     context = {'menu':menu, 'menu_food':menu_food, 'order': order,'total_cart': total_cart, 'all_menu':all_menu}
     return render(request, 'menu.html', context)
 
@@ -196,3 +226,10 @@ def search_food(request):
         'all_menu': all_menu
     }
     return render(request, 'search_food.html', context)
+
+
+def delete_order(request, id):
+    user = request.user 
+    order = Order.objects(id=id, customer__user=user)
+    order.delete()
+    return HttpResponse(request, 'order deleted')

@@ -24,7 +24,7 @@ class EmailSender:
         context = {'username':user.username, 'mail_code':user.verify_code}
         message = render_to_string('mails/account_verification.html', context)
         data = {
-            'email_subject':'Eminence Trading Academy Password Reset Code',
+            'email_subject':'CAF | FOOD Password Reset Code',
             'email_body': message,
             'to_email':user.email
             }
@@ -34,11 +34,22 @@ class EmailSender:
         context = {'username':user.username}
         message = render_to_string('mails/account_verification.html', context)
         data = {
-            'email_subject':'Eminence Trading Academy Password Reset Code',
+            'email_subject':'CAF | FOOD Password Reset Code',
             'email_body': message,
             'to_email':user.email
             }
         self.send_email(data)
+
+    def send_notification_email(self, email):
+        context = {'email':email}
+        message = render_to_string('mails/account_verification.html', context)
+        data = {
+            'email_subject':'CAF | FOOD',
+            'email_body': message,
+            'to_email':email
+            }
+        self.send_email(data)
+
 
 
 def send_customer_verify_code(email):

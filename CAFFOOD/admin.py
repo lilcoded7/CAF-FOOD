@@ -5,6 +5,7 @@ from CAFFOOD.models.category import Category
 from CAFFOOD.models.order import Order
 from CAFFOOD.models.order_item import OrderItem
 from CAFFOOD.models.menu import Menu
+from CAFFOOD.models.notification import Notification
 # Register your models here.
 
 class FoodAdmin(admin.ModelAdmin):
@@ -20,3 +21,4 @@ admin.site.register(Order)
 admin.site.register(Menu)
 admin.site.register(Customer)
 admin.site.register(OrderItem, OrderItemAdmin)
+admin.site.register(Notification)
