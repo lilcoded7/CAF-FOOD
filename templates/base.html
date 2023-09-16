@@ -164,8 +164,9 @@
                             <!-- user notification -->
                             <div class="cart-btn notification-btn">
                                 <a href="#" class="text-light-green fw-700"> <i class="fas fa-bell"></i>
-                                    <span class="user-alert-notification" style="border-radius: 55px;">0</span>
+                                    <span class="user-alert-notification" style="border-radius: 55px;">{{notification_count}}</span>
                                 </a>
+                                {% for message in notification %}
                                 <div class="notification-dropdown">
                                     <div class="product-detail">
                                         <a href="#">
@@ -173,8 +174,8 @@
                                                 <img src="{% static 'assets/img/shop-1.png' %}" class="rounded" alt="image">
                                             </div>
                                             <div class="product-about">
-                                                <p class="text-light-black">Lil Johnny’s</p>
-                                                <p class="text-light-white">Spicy Maxican Grill</p>
+                                                <p class="text-light-black">{{message.head}}</p>
+                                                <p class="text-light-white">{{message.message}}</p>
                                             </div>
                                         </a>
                                     </div>
@@ -187,6 +188,7 @@
                                         <cite class="text-light-white">Ordered 2 days ago</cite>
                                     </div>
                                 </div>
+                                {% endfor %}
                             </div>
                             <!-- user notification -->
                             <!-- user cart -->

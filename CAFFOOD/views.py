@@ -15,11 +15,12 @@ from django.db.models import DecimalField
 from CAFFOOD.models.used_code import UsedCode
 from CAFFOOD.models.menu import Menu
 from account.utils import check_user_status
+from CAFFOOD.models.notification import Notification
 from pyzbar.pyzbar import decode
 from decimal import Decimal
 import cv2
 import time
-
+import json
 
 User = get_user_model()
 # Create your views here.
@@ -27,9 +28,12 @@ User = get_user_model()
 
 
 def shop(request):
+    user = request.user
     data       = cartData(request)
     order       = data['order']
     total_cart  = data['total_cart']
+    notification=data['notification']
+    notification_count=data['notification_count']
     products = Food.objects.all()
     category = Category.objects.all()
     all_menu = Menu.objects.all()
@@ -42,7 +46,9 @@ def shop(request):
         'total_cart': total_cart,  
         'category':category,
         'all_menu':all_menu,
-        'foods':foods
+        'foods':foods,
+        'notification':notification,
+        'notification_count':notification_count
         }
         return render(request, 'search_food.html', context)
     context = {
@@ -50,16 +56,21 @@ def shop(request):
         'order': order,
         'total_cart': total_cart,  
         'category':category,
-        'all_menu':all_menu
+        'all_menu':all_menu,
+        'notification':notification,
+        'notification_count':notification_count
     }
     return render(request, 'shop.html', context)
 
 @login_required
 def cart(request):
+    user = request.user
     data       = cartData(request)
     items       = data['items']
     order       = data['order']
     total_cart  = data['total_cart']
+    notification=data['notification']
+    notification_count=data['notification_count']
     all_menu = Menu.objects.all()
     category = Category.objects.all()
     if request.method == 'POST':
@@ -71,10 +82,12 @@ def cart(request):
         'total_cart': total_cart,  
         'category':category,
         'all_menu':all_menu,
-        'foods':foods
+        'foods':foods,
+        'notification':notification,
+        'notification_count':notification_count
         }
         return render(request, 'search_food.html', context)
-    context = {'items':items, 'order':order,'total_cart':total_cart,'category':category, 'all_menu':all_menu}
+    context = {'items':items, 'order':order,'total_cart':total_cart,'category':category, 'all_menu':all_menu, 'notifications':notification, 'notification_count':notification_count}
     return render(request, 'cart.html', context)
 
 def updateItem(request):
@@ -99,6 +112,8 @@ def about(request):
     items       = data['items']
     order       = data['order']
     total_cart  = data['total_cart']
+    notification=data['notification']
+    notification_count=data['notification_count']
     all_menu = Menu.objects.all()
     category = Category.objects.all()
     food_name = request.POST.get('food_name')
@@ -111,10 +126,12 @@ def about(request):
         'total_cart': total_cart,  
         'category':category,
         'all_menu':all_menu,
-        'foods':foods
+        'foods':foods,
+        'notification':notification,
+        'notification_count':notification_count,
         }
         return render(request, 'search_food.html', context)
-    context = {'items':items, 'order':order,'total_cart':total_cart,'category':category, 'all_menu':all_menu}
+    context = {'items':items, 'order':order,'total_cart':total_cart,'category':category, 'all_menu':all_menu, 'notification':notification, 'notification_count':notification_count}
     return render(request, 'about.html', context)
 
 def process_order(request):
@@ -182,9 +199,12 @@ def admin_dashboard(request):
     return render(request, 'admin.html', {'orders': orders, 'order_items': order_items, 'total_order_price': total_order_price})
 
 def food_menu_view(request, pk):
+    user=request.user
     data       = cartData(request)
     order       = data['order']
     total_cart  = data['total_cart']
+    notification=data['notification']
+    notification_count=data['notification_count']
     menu = Menu.objects.get(id=pk)
     menu_food = Food.objects.filter(menu=menu)
     all_menu = Menu.objects.all()
@@ -195,17 +215,22 @@ def food_menu_view(request, pk):
         'order': order,
         'total_cart': total_cart,
         'all_menu':all_menu,
-        'foods':foods
+        'foods':foods,
+        'notification':notification,
+        'notification_count':notification_count
         }
         return render(request, 'search_food.html', context)
-    context = {'menu':menu, 'menu_food':menu_food, 'order': order,'total_cart': total_cart, 'all_menu':all_menu}
+    context = {'menu':menu, 'menu_food':menu_food, 'order': order,'total_cart': total_cart, 'all_menu':all_menu, 'notification':notification, 'notification_count':notification_count}
     return render(request, 'menu.html', context)
 
 def search_food(request):
+    user = request.user 
     data = cartData(request)
     items       = data['items']
     order       = data['order']
     total_cart  = data['total_cart']
+    notification=data['notification']
+    notification_count=data['notification_count']
     category = Category.objects.all()
     all_menu = Menu.objects.all()
     food_name = request.POST.get('food_name')
@@ -223,10 +248,11 @@ def search_food(request):
         'order': order,
         'total_cart': total_cart,  
         'category': category,
-        'all_menu': all_menu
+        'all_menu': all_menu,
+        'notification':notification,
+        'notification':notification_count
     }
     return render(request, 'search_food.html', context)
-
 
 def delete_order(request, id):
     user = request.user 

@@ -42,7 +42,17 @@ class EmailSender:
 
     def send_notification_email(self, email):
         context = {'email':email}
-        message = render_to_string('mails/account_verification.html', context)
+        message = render_to_string('mails/notification.html', context)
+        data = {
+            'email_subject':'CAF | FOOD',
+            'email_body': message,
+            'to_email':email
+            }
+        self.send_email(data)
+    
+    def send_congratulation(self, email):
+        context = {'email':email}
+        message = render_to_string('mails/notification.html', context)
         data = {
             'email_subject':'CAF | FOOD',
             'email_body': message,

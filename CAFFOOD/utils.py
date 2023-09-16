@@ -48,6 +48,8 @@ def cookie_cart(request):
 def cartData(request):
     if request.user.is_authenticated:
         customer = request.user.customer
+        notification = Notification.objects.filter(cusotmer=cusotmer)
+        notification_count = Notification.count_notifications()
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         items = order.orderitem_set.all()
         total_cart = order.get_cart_items
@@ -56,8 +58,10 @@ def cartData(request):
         items       = cookie_data['items']
         order       = cookie_data['order']
         total_cart  = cookie_data['total_cart']
-    return {'items':items, 'order':order,'total_cart':total_cart}
+        notification= ''
+        notification_count=''
+    return {'items':items, 'order':order,'total_cart':total_cart, 'notification':notification, 'notification_count':notification_count}
 
 def notification(head, message):
-    Notification.objects.creat(head=head, message=message)
+    Notification.objects.create(head=head, message=message)
     return True
