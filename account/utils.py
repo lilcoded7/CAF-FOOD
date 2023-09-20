@@ -67,7 +67,7 @@ def send_customer_verify_code(email):
     context = {'username':user.username, 'mail_code':mail_code}
     message = render_to_string('mails/account_verification.html', context)
     data = {
-        'email_subject':'CAF-FOOD Email Verification',
+        'email_subject':'CAF | FOOD Email Verification',
         'email_body': message,
         'to_email':email
         }
