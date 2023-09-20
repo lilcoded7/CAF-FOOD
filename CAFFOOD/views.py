@@ -33,7 +33,7 @@ def shop(request):
     order       = data['order']
     total_cart  = data['total_cart']
     notification=data['notification']
-    notification_count=data['notification_count']
+    print(notification)
     products = Food.objects.all()
     category = Category.objects.all()
     all_menu = Menu.objects.all()
@@ -48,7 +48,6 @@ def shop(request):
         'all_menu':all_menu,
         'foods':foods,
         'notification':notification,
-        'notification_count':notification_count
         }
         return render(request, 'search_food.html', context)
     context = {
@@ -58,7 +57,6 @@ def shop(request):
         'category':category,
         'all_menu':all_menu,
         'notification':notification,
-        'notification_count':notification_count
     }
     return render(request, 'shop.html', context)
 
@@ -70,24 +68,21 @@ def cart(request):
     order       = data['order']
     total_cart  = data['total_cart']
     notification=data['notification']
-    notification_count=data['notification_count']
     all_menu = Menu.objects.all()
     category = Category.objects.all()
     if request.method == 'POST':
         food_name = request.POST.get('food_name')
         foods = Food.objects.filter(name__icontains=food_name)
         context = context = {
-        'products': products,
         'order': order,
         'total_cart': total_cart,  
         'category':category,
         'all_menu':all_menu,
         'foods':foods,
         'notification':notification,
-        'notification_count':notification_count
         }
         return render(request, 'search_food.html', context)
-    context = {'items':items, 'order':order,'total_cart':total_cart,'category':category, 'all_menu':all_menu, 'notifications':notification, 'notification_count':notification_count}
+    context = {'items':items, 'order':order,'total_cart':total_cart,'category':category, 'all_menu':all_menu, 'notifications':notification}
     return render(request, 'cart.html', context)
 
 def updateItem(request):
@@ -113,7 +108,6 @@ def about(request):
     order       = data['order']
     total_cart  = data['total_cart']
     notification=data['notification']
-    notification_count=data['notification_count']
     all_menu = Menu.objects.all()
     category = Category.objects.all()
     food_name = request.POST.get('food_name')
@@ -128,10 +122,9 @@ def about(request):
         'all_menu':all_menu,
         'foods':foods,
         'notification':notification,
-        'notification_count':notification_count,
         }
         return render(request, 'search_food.html', context)
-    context = {'items':items, 'order':order,'total_cart':total_cart,'category':category, 'all_menu':all_menu, 'notification':notification, 'notification_count':notification_count}
+    context = {'items':items, 'order':order,'total_cart':total_cart,'category':category, 'all_menu':all_menu, 'notification':notification}
     return render(request, 'about.html', context)
 
 def process_order(request):
@@ -204,7 +197,6 @@ def food_menu_view(request, pk):
     order       = data['order']
     total_cart  = data['total_cart']
     notification=data['notification']
-    notification_count=data['notification_count']
     menu = Menu.objects.get(id=pk)
     menu_food = Food.objects.filter(menu=menu)
     all_menu = Menu.objects.all()
@@ -217,10 +209,9 @@ def food_menu_view(request, pk):
         'all_menu':all_menu,
         'foods':foods,
         'notification':notification,
-        'notification_count':notification_count
         }
         return render(request, 'search_food.html', context)
-    context = {'menu':menu, 'menu_food':menu_food, 'order': order,'total_cart': total_cart, 'all_menu':all_menu, 'notification':notification, 'notification_count':notification_count}
+    context = {'menu':menu, 'menu_food':menu_food, 'order': order,'total_cart': total_cart, 'all_menu':all_menu, 'notification':notification}
     return render(request, 'menu.html', context)
 
 def search_food(request):
@@ -230,7 +221,6 @@ def search_food(request):
     order       = data['order']
     total_cart  = data['total_cart']
     notification=data['notification']
-    notification_count=data['notification_count']
     category = Category.objects.all()
     all_menu = Menu.objects.all()
     food_name = request.POST.get('food_name')
@@ -249,8 +239,7 @@ def search_food(request):
         'total_cart': total_cart,  
         'category': category,
         'all_menu': all_menu,
-        'notification':notification,
-        'notification':notification_count
+        'notification':notification
     }
     return render(request, 'search_food.html', context)
 

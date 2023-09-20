@@ -142,7 +142,7 @@
                                         
                                     </ul>
                                     {% endfor %}
-                                    <div class="user-footer"> <span class="text-light-black">Not Jhon?</span> <a href="#">Sign Out</a>
+                                    <div class="user-footer"> <span class="text-light-black">{{request.user.username}}</span> <a href="{% url 'logout' %}">Sign Out</a>
                                     </div>
                                 </div>
                             </div>
@@ -164,7 +164,7 @@
                             <!-- user notification -->
                             <div class="cart-btn notification-btn">
                                 <a href="#" class="text-light-green fw-700"> <i class="fas fa-bell"></i>
-                                    <span class="user-alert-notification" style="border-radius: 55px;">{{notification_count}}</span>
+                                    <span class="user-alert-notification" style="border-radius: 55px;">{{count_notifications}}</span>
                                 </a>
                                 {% for message in notification %}
                                 <div class="notification-dropdown">
@@ -185,7 +185,6 @@
                                         <span class="text-dark-white"><i class="fas fa-star"></i></span>
                                         <span class="text-dark-white"><i class="fas fa-star"></i></span>
                                         <span class="text-dark-white"><i class="fas fa-star"></i></span>
-                                        <cite class="text-light-white">Ordered 2 days ago</cite>
                                     </div>
                                 </div>
                                 {% endfor %}

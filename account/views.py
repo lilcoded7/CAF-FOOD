@@ -16,11 +16,9 @@ def register(request):
     if request.method == 'POST':
         form = UserRegisterFrom(request.POST)
         if form.is_valid():
-            cusotmer_password = form.cleaned_data['password']
+            password = form.cleaned_data['password']
             user = form.save()
-            user.set_password(user.password)
-            user.save()
-            cusotmer = Customer.objects.create(user=user, name=user.username, password=cusotmer_password)
+            customer = Customer.objects.create(user=user, name=user.username, password=password)
             return redirect('verify-customer-email')
         else:
             messages.info(request, 'registration failed, enter correct details')

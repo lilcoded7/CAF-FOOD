@@ -10,6 +10,6 @@ class Notification(models.Model):
     def __str__(self):
         return self.head
 
-    @classmethod
+    @property
     def count_notifications(cls):
         return cls.objects.count()

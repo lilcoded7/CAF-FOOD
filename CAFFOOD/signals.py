@@ -12,7 +12,7 @@ def create_user_notification(sender, instance, created, **kwargs):
     if created:
         head = 'CAF | FOOD'
         message = 'Order is successful, kindly visit Uenr Cafiteria for your order' 
-        notification(head, message)
+        notification(head, message, instance.customer)
         EmailSender().send_notification_email(instance.customer.user.email)
 
 
@@ -21,5 +21,5 @@ def create_user_notification(sender, instance, created, **kwargs):
     if created:
         head = 'CAF | FOOD'
         message = 'Your registration successfully' 
-        notification(head, message)
+        notification(head, message, instance)
         EmailSender().send_notification_email(instance.customer.user.email)
