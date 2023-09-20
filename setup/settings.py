@@ -43,12 +43,15 @@ INSTALLED_APPS = [
     'account',
 
     # third party app
+    'corsheaders',
    
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -61,12 +64,7 @@ ROOT_URLCONF = 'setup.urls'
 AUTH_USER_MODEL = 'account.CustomUser'
 
 
-# STORAGES = {
-#     # ...
-#     "staticfiles": {
-#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-#     },
-# }
+
 
 TEMPLATES = [
     {
@@ -133,10 +131,12 @@ USE_TZ = True
 
 CORS_ALLOW_ALL_ORIGINS = True
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_ROOT = '/media/'
 

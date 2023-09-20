@@ -34,56 +34,64 @@
                 <form method="POST" class="needs-validation">
                     {% csrf_token %}
                     {% for message in messages %}
-                        <h6 style="color: green;">{{message}}</h6>
+                        <h6 style="color: green;">{{ message }}</h6>
                     {% endfor %}
-
-
-                  <div class="form-group">
-                    <label for="email">Username</label>
-                    <div>{{form.username}}</div>
-                    <div class="invalid-feedback">
-                      Please fill in your username
+            
+                    {% if form.non_field_errors %}
+                        <ul class="errorlist">
+                            {% for error in form.non_field_errors %}
+                                <li style="color: red;">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+            
+                    <div class="form-group">
+                        <label for="{{ form.username.id_for_label }}">Username</label>
+                        {{ form.username }}
+                        <div class="invalid-feedback">
+                            {{ form.username.errors }}
+                        </div>
                     </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="email">Email</label>
-                    <div>{{form.email}}</div>
-                    <div class="invalid-feedback">
-                      Please fill in your email
+            
+                    <div class="form-group">
+                        <label for="{{ form.email.id_for_label }}">Email</label>
+                        {{ form.email }}
+                        <div class="invalid-feedback">
+                            {{ form.email.errors }}
+                        </div>
                     </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="email">Password</label>
-                    <div>{{form.password}}</div>
-                    <div class="invalid-feedback">
-                      Please fill in your password
+            
+                    <div class="form-group">
+                        <label for="{{ form.password1.id_for_label }}">Password</label>
+                        {{ form.password1 }}
+                        <div class="invalid-feedback">
+                            {{ form.password1.errors }}
+                        </div>
                     </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="email">Confirm password</label>
-                    <div>{{form.password2}}</div>
-                    <div class="invalid-feedback">
-                      Please fill in your password
+            
+                    <div class="form-group">
+                        <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+                        {{ form.password2 }}
+                        <div class="invalid-feedback">
+                            {{ form.password2.errors }}
+                        </div>
                     </div>
-                  </div>
-                  
-                  <div class="form-group">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me" required>
-                      <label class="custom-control-label" for="remember-me">Remember Me</label>
+            
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me" required>
+                            <label class="custom-control-label" for="remember-me">Remember Me</label>
+                        </div>
                     </div>
-                  </div>
-                  
-                  <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
-                      submit
-                    </button>
-                    
-                  </div>
-                  <a style="text-align: left;" href="{% url 'login' %}">login here</a>
+            
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">Submit</button>
+                    </div>
+            
+                    <p style="text-align: left;">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
                 </form>
-                
-              </div>
+            </div>
+            
             </div>
             
           </div>

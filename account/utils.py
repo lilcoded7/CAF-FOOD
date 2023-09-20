@@ -18,7 +18,6 @@ class EmailSender:
         email.content_subtype = 'html'
         email.send()
 
-    
 
     def send_email_verification_code(self, user):
         context = {'username':user.username, 'mail_code':user.verify_code}
@@ -52,7 +51,7 @@ class EmailSender:
     
     def send_congratulation(self, email):
         context = {'email':email}
-        message = render_to_string('mails/notification.html', context)
+        message = render_to_string('mails/resgister_mail.html', context)
         data = {
             'email_subject':'CAF | FOOD',
             'email_body': message,

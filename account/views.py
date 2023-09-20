@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model 
-from account.forms import UserRegisterFrom, LoginForm, EmailForm, CodeForm, ResetPasswordForm
+from account.forms import *
 from django.contrib.auth import authenticate, login, logout
 from CAFFOOD.models.customer import Customer
 from django.contrib import messages
@@ -12,19 +12,20 @@ from account.utils import EmailSender, send_customer_verify_code, check_user_sta
 User = get_user_model()
 
 def register(request):
-    form = UserRegisterFrom() 
     if request.method == 'POST':
-        form = UserRegisterFrom(request.POST)
+        form = UserRegisterForm(request.POST)
         if form.is_valid():
-            password = form.cleaned_data['password']
             user = form.save()
+            password = form.cleaned_data['password1'] 
             customer = Customer.objects.create(user=user, name=user.username, password=password)
             return redirect('verify-customer-email')
         else:
-            messages.info(request, 'registration failed, enter correct details')
+            messages.error(request, 'Registration failed. Please enter correct details.')
     else:
-        form = UserRegisterFrom()
-    return render(request, 'auths/register.html', {'form':form})
+        form = UserRegisterForm()
+
+    return render(request, 'auths/register.html', {'form': form})
+
 
 def login_view(request):
     form = LoginForm()

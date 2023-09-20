@@ -5,49 +5,50 @@ from django.contrib.auth.forms import UserCreationForm
 User =get_user_model()
 
 
-class UserRegisterFrom(UserCreationForm):
+class UserRegisterForm(UserCreationForm):
     username = forms.CharField(
-        required=True, widget=forms.TextInput(
+        required=True, 
+        widget=forms.TextInput(
             attrs={
-                'placeholder':'username',
-                'class'      : 'form-control'
+                'placeholder': 'Username',
+                'class': 'form-control'
             }
         )
     )
 
     email = forms.EmailField(
-        required=True, widget=forms.TextInput(
+        required=True, 
+        widget=forms.TextInput(
             attrs={
-                'placeholder':'email',
-                'class'      : 'form-control'
+                'placeholder': 'Email',
+                'class': 'form-control'
             }
         )
     )
 
-    password = forms.CharField(
-        required=True, widget=forms.TextInput(
+    password1 = forms.CharField(
+        required=True, 
+        widget=forms.PasswordInput(
             attrs={
-                'type'       : 'password',
-                'placeholder':'password',
-                'class'      : 'form-control'
+                'placeholder': 'Password',
+                'class': 'form-control'
             }
         )
     )
 
     password2 = forms.CharField(
-        required=True, widget=forms.TextInput(
+        required=True, 
+        widget=forms.PasswordInput(
             attrs={
-                'type'       : 'password',
-                'placeholder':'confirm password',
-                'class'      : 'form-control'
+                'placeholder': 'Confirm Password',
+                'class': 'form-control'
             }
         )
     )
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'password2']
-
+        fields = ['username', 'email', 'password1', 'password2']
 
 
 class LoginForm(forms.Form):
