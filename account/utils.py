@@ -49,13 +49,13 @@ class EmailSender:
             }
         self.send_email(data)
     
-    def send_congratulation(self, email):
-        context = {'email':email}
+    def send_congratulation(self, user):
+        context = {'user':user}
         message = render_to_string('mails/register_mail.html', context)
         data = {
             'email_subject':'CAF | FOOD',
             'email_body': message,
-            'to_email':email
+            'to_email':user.email
             }
         self.send_email(data)
 

@@ -23,4 +23,4 @@ def create_user_notification(sender, instance, created, **kwargs):
         head = 'CAF | FOOD'
         message = 'Your registration successfully' 
         notification(head, message, instance)
-        EmailSender().send_congratulation(instance.user.email)
+        EmailSender().send_congratulation(instance.user)
