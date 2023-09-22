@@ -133,6 +133,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://caffood.up.railway.app",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://caffood.up.railway.app",
+    
+]
+
+
 
 # Mail config
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

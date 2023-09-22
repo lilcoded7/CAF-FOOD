@@ -10,10 +10,10 @@ User = get_user_model()
 @receiver(post_save, sender=User)
 def send_registration_mail(sender, instance, created, **kwargs):
     if created:
-        context = {'username':instance.username, 'mail_code':instance.verify_code}
-        message = render_to_string('mails/register_mail.html', context)
+        context = {'user':instance, 'mail_code':instance.verify_code}
+        message = render_to_string('mails/account_verification.html', context)
         data = {
-            'email_subject':'Eminence Trading Academy VERIFICATION',
+            'email_subject':'CAF | FOOD VERIFICATION',
             'email_body': message,
             'to_email':instance.email
         }

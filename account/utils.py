@@ -51,7 +51,7 @@ class EmailSender:
     
     def send_congratulation(self, email):
         context = {'email':email}
-        message = render_to_string('mails/resgister_mail.html', context)
+        message = render_to_string('mails/register_mail.html', context)
         data = {
             'email_subject':'CAF | FOOD',
             'email_body': message,

@@ -37,12 +37,15 @@
                         <h6 style="color: green;">{{ message }}</h6>
                     {% endfor %}
             
-                    {% if form.non_field_errors %}
-                        <ul class="errorlist">
-                            {% for error in form.non_field_errors %}
-                                <li style="color: red;">{{ error }}</li>
-                            {% endfor %}
-                        </ul>
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <strong>Error(s):</strong>
+                            <ul>
+                                {% for error in form.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
                     {% endif %}
             
                     <div class="form-group">
