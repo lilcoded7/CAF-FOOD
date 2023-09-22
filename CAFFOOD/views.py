@@ -16,7 +16,7 @@ from CAFFOOD.models.used_code import UsedCode
 from CAFFOOD.models.menu import Menu
 from account.utils import check_user_status
 from CAFFOOD.models.notification import Notification
-from pyzbar.pyzbar import decode
+# from pyzbar.pyzbar import decode
 from decimal import Decimal
 import cv2
 import time
@@ -160,34 +160,33 @@ def dashboard(request):
 def scan_qrcode(request):
     return render(request, 'code.html')
 
-def read_qr_code(request):
-    cap = cv2.VideoCapture(0)
-    cap.set(3, 640)
-    cap.set(4, 480)
-    camera = True
-    while camera:
-        success, frame = cap.read()
-        codes = decode(frame)
-        if codes:
-            for code in codes:
-                qr_data = code.data.decode('utf-8')
-                print('QR Code Type:', code.type)
-                print('QR Code Data:', qr_data)
-                time.sleep(5)
-        else:
-            print('No QR codes detected!')
-            time.sleep(5)
-        cv2.imshow('CAF|FOOD', frame)
-        cv2.waitKey(1)
-    cap.release()
-    cv2.destroyAllWindows()
-
-    return render(request, 'qrcode_result.html')
+# def read_qr_code(request):
+#     cap = cv2.VideoCapture(0)
+#     cap.set(3, 640)
+#     cap.set(4, 480)
+#     camera = True
+#     while camera:
+#         success, frame = cap.read()
+#         codes = decode(frame)
+#         if codes:
+#             for code in codes:
+#                 qr_data = code.data.decode('utf-8')
+#                 print('QR Code Type:', code.type)
+#                 print('QR Code Data:', qr_data)
+#                 time.sleep(5)
+#         else:
+#             print('No QR codes detected!')
+#             time.sleep(5)
+#         cv2.imshow('CAF|FOOD', frame)
+#         cv2.waitKey(1)
+#     cap.release()
+#     cv2.destroyAllWindows()
+#     return render(request, 'qrcode_result.html')
 
 def admin_dashboard(request):
     orders = Order.objects.filter(complete=True).count()
     order_price = Order.objects.aggregate(total=Coalesce(Sum('order_price'), Value(0, output_field=DecimalField())))
-    total_order_price = Decimal(order_price['total']).quantize(Decimal('0.00'))  # Round to two decimal places
+    total_order_price = Decimal(order_price['total']).quantize(Decimal('0.00')) 
     order_items = OrderItem.objects.filter(order__complete=True)
     return render(request, 'admin.html', {'orders': orders, 'order_items': order_items, 'total_order_price': total_order_price})
 
