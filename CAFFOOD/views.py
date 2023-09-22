@@ -18,7 +18,7 @@ from account.utils import check_user_status
 from CAFFOOD.models.notification import Notification
 # from pyzbar.pyzbar import decode
 from decimal import Decimal
-import cv2
+# import cv2
 import time
 import json
 
